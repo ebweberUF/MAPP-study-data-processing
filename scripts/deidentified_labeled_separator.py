@@ -304,8 +304,8 @@ def main():
             week4_ema.to_csv(week4_path, index=False)
             print(f"  4-Week EMA: {week4_ema.shape[0]} records, {week4_ema.shape[1]} variables")
     
-    # 3. EXTRACT SALIVA DATA
-    print(f"\n=== EXTRACTING SALIVA DATA (DE-IDENTIFIED) ===")
+    # 3. EXTRACT SALIVA DATA (BY EVENT)
+    print(f"\n=== EXTRACTING SALIVA DATA BY EVENT (DE-IDENTIFIED) ===")
     saliva_cols = [col for col in df.columns if 'sal_' in col.lower()]
     
     if saliva_cols:
@@ -317,9 +317,24 @@ def main():
         saliva_data = remove_hipaa_identifiers(saliva_data, hipaa_identifiers)
         saliva_data = clean_for_ascii(saliva_data)
         
+        # Save combined file (for compatibility)
         complete_path = os.path.join(saliva_dir, f"saliva_complete_deidentified_{date_label}.csv")
         saliva_data.to_csv(complete_path, index=False)
-        print(f"  Saliva data: {saliva_data.shape[0]} records, {saliva_data.shape[1]} variables")
+        print(f"  Saliva complete: {saliva_data.shape[0]} records, {saliva_data.shape[1]} variables")
+        
+        # SEPARATE BY EVENT (like other data)
+        saliva_events = saliva_data['redcap_event_name'].unique()
+        for event in saliva_events:
+            event_saliva = saliva_data[saliva_data['redcap_event_name'] == event].copy()
+            
+            if not event_saliva.empty:
+                # Clean event name for filename
+                clean_event_name = event.replace('_arm_1', '').replace('_', '-')
+                event_filename = f"saliva-{clean_event_name}_deidentified_{date_label}.csv"
+                event_path = os.path.join(events_dir, event_filename)
+                
+                event_saliva.to_csv(event_path, index=False)
+                print(f"  {event}: {event_saliva.shape[0]} records -> {event_filename}")
     
     # 4. CREATE COMPREHENSIVE SUMMARY
     summary_file = os.path.join(metadata_dir, f"deidentification_summary_{date_label}.txt")

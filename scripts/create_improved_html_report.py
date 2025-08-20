@@ -55,6 +55,11 @@ def create_improved_html_report():
             'title': 'Missing Data Analysis',
             'image': 'missing_data_analysis_improved.png',
             'description': 'Corrected analysis distinguishing true missing data from study design. Shows participant completion status, true within-assessment missingness rates, attrition flow, and explains REDCap study protocol vs. actual missing data patterns.'
+        },
+        {
+            'title': 'Saliva Collection Analysis',
+            'image': 'saliva_collection_analysis.png',
+            'description': 'Comprehensive analysis of biomarker collection compliance. Shows participant-level collection status for 10 samples per timepoint (5 samples/day × 2 days), compliance rates, day-by-day collection patterns, and protocol adherence across enrollment and follow-up periods.'
         }
     ]
     

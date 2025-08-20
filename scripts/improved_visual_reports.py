@@ -74,9 +74,79 @@ class MAPPImprovedReports:
             'complete': '#32CD32'      # Lime Green
         }
         
+        # Professional card-style settings
+        self.card_style = {
+            'facecolor': 'white',
+            'edgecolor': '#e0e0e0',
+            'linewidth': 1.5,
+            'boxstyle': 'round,pad=0.02',
+            'alpha': 1.0
+        }
+        
+        # Set matplotlib style for professional appearance
+        plt.style.use('default')
+        plt.rcParams.update({
+            'font.size': 11,
+            'axes.titlesize': 14,
+            'axes.labelsize': 12,
+            'xtick.labelsize': 10,
+            'ytick.labelsize': 10,
+            'legend.fontsize': 10,
+            'figure.titlesize': 16,
+            'axes.grid': True,
+            'grid.alpha': 0.3,
+            'axes.axisbelow': True,
+            'axes.edgecolor': '#e0e0e0',
+            'axes.linewidth': 1.2,
+            'xtick.color': '#666666',
+            'ytick.color': '#666666',
+            'text.color': '#333333'
+        })
+        
         # Color palette for multiple categories
         self.palette = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', 
                        '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+    
+    def apply_professional_styling(self, fig, axes_list=None):
+        """
+        Apply professional card-style formatting to figure and axes
+        """
+        # Set figure background
+        fig.patch.set_facecolor('#f8f9fa')
+        fig.patch.set_edgecolor('none')
+        
+        # Apply styling to all axes if not specified
+        if axes_list is None:
+            axes_list = fig.get_axes()
+        
+        for ax in axes_list:
+            # Card-style background for each subplot
+            ax.set_facecolor('white')
+            
+            # Professional borders
+            for spine in ax.spines.values():
+                spine.set_color('#e0e0e0')
+                spine.set_linewidth(1.2)
+            
+            # Grid styling
+            ax.grid(True, alpha=0.3, color='#e0e0e0', linewidth=0.8)
+            ax.set_axisbelow(True)
+            
+            # Tick styling
+            ax.tick_params(colors='#666666', which='both')
+            ax.tick_params(axis='both', length=0)  # Hide tick marks for cleaner look
+            
+            # Add subtle shadow effect with bbox
+            if hasattr(ax, '_shadow_applied'):
+                continue  # Avoid applying multiple times
+                
+            # Mark as styled
+            ax._shadow_applied = True
+        
+        # Adjust layout for card-style appearance
+        fig.tight_layout(pad=2.0)
+        
+        return fig
     
     def load_labels(self):
         """
@@ -300,11 +370,13 @@ Data Collection:
                          alpha=0.9, edgecolor=self.colors['primary'], linewidth=2),
                 family='monospace')
         
-        plt.tight_layout(pad=3.0)
+        # Apply professional card-style formatting
+        fig = plt.gcf()
+        fig = self.apply_professional_styling(fig)
         
         # Save figure
         output_file = os.path.join(self.output_dir, 'baseline_demographics_improved.png')
-        plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white')
+        plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='#f8f9fa', edgecolor='none')
         plt.close()
         
         print(f"Improved baseline demographics saved to: {output_file}")
@@ -402,11 +474,13 @@ Data Collection:
                        bbox=dict(boxstyle="round,pad=0.5", facecolor=self.colors['light']))
                 ax.set_title(self.get_clean_label(pain_var, 35), weight='bold', pad=20)
         
-        plt.tight_layout(pad=3.0)
+        # Apply professional card-style formatting
+        fig = plt.gcf()
+        fig = self.apply_professional_styling(fig)
         
         # Save figure
         output_file = os.path.join(self.output_dir, 'pain_trajectories_improved.png')
-        plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white')
+        plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='#f8f9fa', edgecolor='none')
         plt.close()
         
         print(f"Improved pain trajectories saved to: {output_file}")
@@ -501,11 +575,13 @@ Range = {promis_data.min():.1f}-{promis_data.max():.1f}"""
                        bbox=dict(boxstyle="round,pad=0.5", facecolor=self.colors['light']))
                 ax.set_title(self.get_clean_label(promis_var, 30), weight='bold', pad=20)
         
-        plt.tight_layout(pad=3.0)
+        # Apply professional card-style formatting
+        fig = plt.gcf()
+        fig = self.apply_professional_styling(fig)
         
         # Save figure
         output_file = os.path.join(self.output_dir, 'promis_outcomes_improved.png')
-        plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white')
+        plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='#f8f9fa', edgecolor='none')
         plt.close()
         
         print(f"Improved PROMIS outcomes saved to: {output_file}")
@@ -518,7 +594,7 @@ Range = {promis_data.min():.1f}-{promis_data.max():.1f}"""
         
         # Create figure with single large layout
         fig = plt.figure(figsize=(20, 14))
-        gs = fig.add_gridspec(3, 3, height_ratios=[1, 1, 1], width_ratios=[1, 1, 1], 
+        gs = fig.add_gridspec(2, 3, height_ratios=[1, 1], width_ratios=[1, 1, 1], 
                              hspace=0.3, wspace=0.3)
         
         fig.suptitle('MAPP Study: Executive Summary Dashboard', 
@@ -643,11 +719,13 @@ Range = {promis_data.min():.1f}-{promis_data.max():.1f}"""
                 ha='center', fontsize=18, weight='bold')
         
         
-        plt.tight_layout(pad=2.0)
+        # Apply professional card-style formatting
+        fig = plt.gcf()
+        fig = self.apply_professional_styling(fig)
         
         # Save figure
         output_file = os.path.join(self.output_dir, 'executive_summary_improved.png')
-        plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white')
+        plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='#f8f9fa', edgecolor='none')
         plt.close()
         
         print(f"Improved executive summary saved to: {output_file}")
@@ -929,15 +1007,414 @@ This analysis distinguishes: (1) True attrition, (2) Pending data collection, (3
                 bbox=dict(boxstyle="round,pad=0.5", facecolor=self.colors['light'], 
                          alpha=0.9, edgecolor=self.colors['primary'], linewidth=2))
         
-        # Adjust layout manually to avoid colorbar conflict
-        plt.subplots_adjust(left=0.08, right=0.95, top=0.92, bottom=0.08, hspace=0.35, wspace=0.25)
+        # Apply professional card-style formatting
+        fig = plt.gcf()
+        fig = self.apply_professional_styling(fig)
         
         # Save figure
         output_file = os.path.join(self.output_dir, 'missing_data_analysis_improved.png')
-        plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='white')
+        plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='#f8f9fa', edgecolor='none')
         plt.close()
         
         print(f"Corrected missing data analysis saved to: {output_file}")
+    
+    def create_saliva_collection_analysis(self):
+        """
+        Create comprehensive saliva collection analysis visualization
+        PROTOCOL NOTE: Enrollment samples are physically returned at Week 4 visit
+        """
+        print("\n=== CREATING SALIVA COLLECTION ANALYSIS ===")
+        
+        # Load saliva data
+        saliva_file = os.path.join(os.path.dirname(self.output_dir), 'saliva_data', 'saliva_complete_deidentified_2025-08-20.csv')
+        
+        if not os.path.exists(saliva_file):
+            print(f"Saliva data file not found: {saliva_file}")
+            return
+            
+        saliva_df = pd.read_csv(saliva_file)
+        
+        # Create figure with subplots (taller for better participant compliance readability)
+        fig = plt.figure(figsize=(20, 20))
+        gs = fig.add_gridspec(3, 2, height_ratios=[1.5, 2, 1], hspace=0.3, wspace=0.25)
+        
+        # Title
+        fig.suptitle('MAPP Study: Saliva Collection Analysis - All Timepoints\n(Expected: 5 samples/day × 2 days = 10 samples per timepoint)\nNOTE: All timepoints are pending until participant reaches that visit', 
+                    fontsize=16, weight='bold', y=0.96)
+        
+        # 1. Participant Collection Overview (appealing grouped visualization)
+        ax1 = fig.add_subplot(gs[0, :])
+        
+        # Load main dataset to understand full study timeline
+        main_data_file = os.path.join(os.path.dirname(os.path.dirname(self.output_dir)), 'MAPP_DATA_2025-08-20_0816.csv')
+        main_df = pd.read_csv(main_data_file)
+        
+        # Get only enrolled participants (those with baseline data/informed consent)
+        all_participants = sorted(main_df[main_df['redcap_event_name'] == 'baseline_preop_arm_1']['subject_id'].unique())
+        events = ['enrollment_arm_1', 'week_4_postop_arm_1', 'month_9_postop_arm_1']
+        event_labels = ['Enrollment', 'Week 4', 'Month 9']
+        
+        # PROTOCOL: Identify which participants have reached each timepoint
+        participants_with_week4 = set(main_df[main_df['redcap_event_name'] == 'week_4_postop_arm_1']['subject_id'].unique())
+        participants_with_month9 = set()  # Month 9 data doesn't exist yet
+        
+        # Create summary statistics instead of individual participant view
+        status_counts = {
+            'Complete (10/10)': [],
+            'Partial (1-9)': [],
+            'Pending': [],
+            'Not Collected': []
+        }
+        
+        participant_details = []  # For detailed breakdown
+        
+        for event, label in zip(events, event_labels):
+            complete = partial = pending = not_collected = 0
+            
+            for subj_id in all_participants:
+                # Get data for this participant at this event
+                participant_data = saliva_df[(saliva_df['subject_id'] == subj_id) & 
+                                           (saliva_df['redcap_event_name'] == event)]
+                
+                # Determine if timepoint is pending
+                if event == 'enrollment_arm_1':
+                    timepoint_pending = subj_id not in participants_with_week4
+                elif event == 'week_4_postop_arm_1':
+                    timepoint_pending = subj_id not in participants_with_week4
+                else:  # month_9
+                    timepoint_pending = subj_id not in participants_with_month9
+                
+                if timepoint_pending:
+                    pending += 1
+                elif participant_data.empty:
+                    not_collected += 1
+                else:
+                    # Count collected samples
+                    samples_collected = 0
+                    for day in [1, 2]:
+                        for sample in range(1, 6):
+                            time_col = f'sal_day{day}_s{sample}_time'
+                            if time_col in participant_data.columns:
+                                samples_collected += participant_data[time_col].notna().sum()
+                    
+                    if samples_collected == 10:
+                        complete += 1
+                        participant_details.append(f"ID {subj_id}: {label} Complete (10/10)")
+                    elif samples_collected > 0:
+                        partial += 1
+                        participant_details.append(f"ID {subj_id}: {label} Partial ({samples_collected}/10)")
+                    else:
+                        not_collected += 1
+            
+            status_counts['Complete (10/10)'].append(complete)
+            status_counts['Partial (1-9)'].append(partial)
+            status_counts['Pending'].append(pending)
+            status_counts['Not Collected'].append(not_collected)
+        
+        # Create appealing grouped bar chart
+        x_pos = np.arange(len(event_labels))
+        bar_width = 0.2
+        
+        colors = {
+            'Complete (10/10)': '#2ca02c',    # Green
+            'Partial (1-9)': '#ffd700',      # Gold
+            'Pending': '#ff7f0e',            # Orange
+            'Not Collected': '#d62728'       # Red
+        }
+        
+        # Plot grouped bars
+        for i, (status, counts) in enumerate(status_counts.items()):
+            offset = (i - 1.5) * bar_width
+            bars = ax1.bar(x_pos + offset, counts, bar_width, 
+                          label=status, color=colors[status], alpha=0.8, 
+                          edgecolor='white', linewidth=1.5)
+            
+            # Add count labels on bars
+            for bar, count in zip(bars, counts):
+                if count > 0:
+                    ax1.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.5,
+                            str(count), ha='center', va='bottom', fontsize=12, weight='bold')
+        
+        ax1.set_xlabel('Collection Timepoints', fontsize=14, weight='bold')
+        ax1.set_ylabel('Number of Participants', fontsize=14, weight='bold')
+        ax1.set_title('Saliva Collection Status Summary by Timepoint\n(Clean Overview of All Participants)', 
+                     fontsize=16, weight='bold', pad=20)
+        ax1.set_xticks(x_pos)
+        ax1.set_xticklabels(event_labels, fontsize=13, weight='bold')
+        ax1.legend(loc='upper right', fontsize=11, framealpha=0.9)
+        ax1.grid(True, alpha=0.3, axis='y')
+        ax1.set_ylim(0, max([max(counts) for counts in status_counts.values()]) * 1.1)
+        
+        # Add summary text box with key participant details
+        detail_text = "KEY COLLECTIONS:\n"
+        complete_details = [d for d in participant_details if 'Complete' in d]
+        partial_details = [d for d in participant_details if 'Partial' in d]
+        
+        if complete_details:
+            detail_text += "\n".join(complete_details[:5])  # Show first 5
+            if len(complete_details) > 5:
+                detail_text += f"\n... and {len(complete_details)-5} more complete"
+        
+        if partial_details:
+            detail_text += "\n\n" + "\n".join(partial_details[:3])  # Show first 3
+            if len(partial_details) > 3:
+                detail_text += f"\n... and {len(partial_details)-3} more partial"
+        
+        ax1.text(0.02, 0.98, detail_text, transform=ax1.transAxes, fontsize=10,
+                verticalalignment='top', fontfamily='monospace',
+                bbox=dict(boxstyle="round,pad=0.5", facecolor='white', 
+                         alpha=0.9, edgecolor=self.colors['primary'], linewidth=2))
+        
+        # 2. Collection compliance by timepoint (accounting for protocol)
+        ax2 = fig.add_subplot(gs[1, 0])
+        
+        # Calculate compliance for each timepoint with proper pending logic
+        timepoint_compliance = []
+        compliance_labels = []
+        
+        for event, label in zip(events, event_labels):
+            complete_count = 0
+            partial_count = 0
+            pending_count = 0
+            none_count = 0
+            
+            for subj_id in all_participants:
+                # Determine if timepoint is pending
+                timepoint_pending = False
+                
+                if event == 'enrollment_arm_1':
+                    timepoint_pending = subj_id not in participants_with_week4
+                elif event == 'week_4_postop_arm_1':
+                    timepoint_pending = subj_id not in participants_with_week4
+                elif event == 'month_9_postop_arm_1':
+                    timepoint_pending = subj_id not in participants_with_month9
+                
+                if timepoint_pending:
+                    pending_count += 1
+                else:
+                    # Check actual collection for this participant/timepoint
+                    participant_data = saliva_df[(saliva_df['subject_id'] == subj_id) & 
+                                               (saliva_df['redcap_event_name'] == event)]
+                    
+                    if participant_data.empty:
+                        none_count += 1
+                    else:
+                        # Count collected samples
+                        collected_samples = 0
+                        for day in [1, 2]:
+                            for sample in range(1, 6):
+                                time_col = f'sal_day{day}_s{sample}_time'
+                                if time_col in participant_data.columns:
+                                    collected_samples += participant_data[time_col].notna().sum()
+                        
+                        if collected_samples == 10:
+                            complete_count += 1
+                        elif collected_samples > 0:
+                            partial_count += 1
+                        else:
+                            none_count += 1
+            
+            # Calculate percentages
+            total_participants = len(all_participants)
+            complete_pct = (complete_count / total_participants) * 100
+            partial_pct = (partial_count / total_participants) * 100
+            pending_pct = (pending_count / total_participants) * 100
+            none_pct = (none_count / total_participants) * 100
+            
+            timepoint_compliance.append([complete_pct, partial_pct, pending_pct, none_pct])
+            
+            # Add visit counts to labels
+            if event == 'month_9_postop_arm_1':
+                compliance_labels.append(f'{label}\n(n=0, all pending)')
+            else:
+                actual_visits = len(participants_with_week4) if 'week_4' in event else len(participants_with_week4)
+                compliance_labels.append(f'{label}\n({actual_visits} visits)')
+        
+        # Create stacked bar chart
+        compliance_data = np.array(timepoint_compliance).T
+        
+        bottom = np.zeros(len(compliance_labels))
+        colors_stack = [self.colors['success'], self.colors['warning'], '#ff7f0e', self.colors['neutral']]
+        labels_stack = ['Complete (10/10)', 'Partial (1-9)', 'Pending Return', 'None (0/10)']
+        
+        for i, (data, color, label) in enumerate(zip(compliance_data, colors_stack, labels_stack)):
+            bars = ax2.bar(compliance_labels, data, bottom=bottom, color=color, alpha=0.8, label=label)
+            
+            # Add percentage labels
+            for j, (bar, pct) in enumerate(zip(bars, data)):
+                if pct > 3:  # Only show label if segment is large enough
+                    ax2.text(bar.get_x() + bar.get_width()/2, bottom[j] + pct/2,
+                            f'{pct:.1f}%', ha='center', va='center', fontsize=10, weight='bold')
+            
+            bottom += data
+        
+        ax2.set_title('Saliva Collection Status by Timepoint\n(Accounting for Protocol)', fontsize=14, weight='bold')
+        ax2.set_ylabel('Percentage of Participants', fontsize=12, weight='bold')
+        ax2.legend(loc='upper right', fontsize=10)
+        ax2.set_ylim(0, 100)
+        
+        # 3. Participant Collection Compliance (actionable for follow-up)
+        ax3 = fig.add_subplot(gs[1, 1])
+        
+        # Calculate compliance for each participant across all available timepoints
+        participant_compliance = []
+        
+        for subj_id in all_participants:
+            total_samples = 0
+            total_possible = 0
+            timepoints_with_data = []
+            
+            # Check each available timepoint
+            for event, label in zip(['enrollment_arm_1', 'week_4_postop_arm_1'], ['Enrollment', 'Week 4']):
+                participant_data = saliva_df[(saliva_df['subject_id'] == subj_id) & 
+                                           (saliva_df['redcap_event_name'] == event)]
+                
+                # Only count timepoints where participant has reached that visit
+                timepoint_reached = False
+                if event == 'enrollment_arm_1':
+                    # Enrollment data available if participant reached Week 4 (samples returned)
+                    timepoint_reached = subj_id in participants_with_week4
+                elif event == 'week_4_postop_arm_1':
+                    timepoint_reached = subj_id in participants_with_week4
+                
+                if timepoint_reached:
+                    total_possible += 10  # 10 samples expected per timepoint
+                    timepoints_with_data.append(label)
+                    
+                    if not participant_data.empty:
+                        # Count actual samples collected
+                        samples_collected = 0
+                        for day in [1, 2]:
+                            for sample in range(1, 6):
+                                time_col = f'sal_day{day}_s{sample}_time'
+                                if time_col in participant_data.columns:
+                                    samples_collected += participant_data[time_col].notna().sum()
+                        total_samples += samples_collected
+            
+            # Calculate compliance rate (only for participants with available timepoints)
+            if total_possible > 0:
+                compliance_rate = (total_samples / total_possible) * 100
+                participant_compliance.append({
+                    'subject_id': subj_id,
+                    'compliance_rate': compliance_rate,
+                    'samples_collected': total_samples,
+                    'samples_possible': total_possible,
+                    'timepoints': ', '.join(timepoints_with_data) if timepoints_with_data else 'Pending'
+                })
+        
+        # Sort by compliance rate (ascending - worst performers first for easy identification)
+        participant_compliance.sort(key=lambda x: x['compliance_rate'])
+        
+        # Create horizontal bar chart for better readability with participant IDs
+        if participant_compliance:
+            participant_ids = [f"ID {p['subject_id']}" for p in participant_compliance]
+            compliance_rates = [p['compliance_rate'] for p in participant_compliance]
+            
+            # Color code by compliance level
+            colors = []
+            for rate in compliance_rates:
+                if rate >= 80:
+                    colors.append('#2ca02c')  # Green - high compliance
+                elif rate >= 50:
+                    colors.append('#ff7f0e')  # Orange - medium compliance  
+                else:
+                    colors.append('#d62728')  # Red - low compliance
+            
+            bars = ax3.barh(participant_ids, compliance_rates, color=colors, alpha=0.8,
+                           edgecolor='white', linewidth=1)
+            
+            # Add percentage labels with larger font
+            for i, (bar, p) in enumerate(zip(bars, participant_compliance)):
+                rate = p['compliance_rate']
+                samples_text = f"{p['samples_collected']}/{p['samples_possible']}"
+                ax3.text(rate + 2, bar.get_y() + bar.get_height()/2,
+                        f'{rate:.0f}% ({samples_text})', va='center', fontsize=11, weight='bold')
+            
+            ax3.set_xlabel('Collection Compliance Rate (%)', fontsize=14, weight='bold')
+            ax3.set_ylabel('Study Participants', fontsize=14, weight='bold')
+            ax3.set_title('Participant Collection Compliance\n(Identifies participants needing follow-up)', 
+                         fontsize=16, weight='bold', pad=25)
+            ax3.set_xlim(0, 105)
+            ax3.grid(True, alpha=0.3, axis='x')
+            
+            # Increase y-axis label font size for better readability
+            ax3.tick_params(axis='y', labelsize=12)
+            ax3.tick_params(axis='x', labelsize=12)
+            
+            # Add compliance legend with larger font
+            legend_elements = [
+                plt.Rectangle((0,0),1,1, facecolor='#2ca02c', alpha=0.8, label='High (≥80%)'),
+                plt.Rectangle((0,0),1,1, facecolor='#ff7f0e', alpha=0.8, label='Medium (50-79%)'),
+                plt.Rectangle((0,0),1,1, facecolor='#d62728', alpha=0.8, label='Low (<50%)')
+            ]
+            ax3.legend(handles=legend_elements, loc='lower right', fontsize=12)
+            
+        else:
+            ax3.text(0.5, 0.5, 'No Compliance Data\nAvailable', 
+                    ha='center', va='center', transform=ax3.transAxes, 
+                    fontsize=14, weight='bold')
+        
+        # 4. Summary statistics
+        ax4 = fig.add_subplot(gs[2, :])
+        ax4.axis('off')
+        
+        # Calculate comprehensive statistics
+        total_participants_enrolled_data = len(saliva_df[saliva_df['redcap_event_name'] == 'enrollment_arm_1'])
+        total_participants_week4_data = len(saliva_df[saliva_df['redcap_event_name'] == 'week_4_postop_arm_1'])
+        
+        # Count pending participants for each timepoint
+        enrollment_pending = len([p for p in all_participants if p not in participants_with_week4])
+        week4_pending = len([p for p in all_participants if p not in participants_with_week4])
+        month9_pending = len(all_participants)  # All pending since no Month 9 visits yet
+        
+        summary_text = f"""SALIVA COLLECTION PROTOCOL SUMMARY:
+
+COLLECTION REQUIREMENTS:
+• Expected samples per participant per timepoint: 10 (5 samples/day × 2 consecutive days)
+• Collection timepoints: Enrollment, Week 4, Month 9
+• Total expected samples per participant: 30 across all timepoints
+
+CRITICAL PROTOCOL UNDERSTANDING:
+• ALL timepoints are "pending" until the participant reaches that visit
+• Enrollment samples: collected after enrollment, returned at Week 4 visit
+• Week 4 samples: collected at Week 4 visit
+• Month 9 samples: collected at Month 9 visit (not yet available)
+
+CURRENT STUDY STATUS:
+• Total participants enrolled: {len(all_participants)}
+• Participants reached Week 4: {len(participants_with_week4)} 
+• Participants reached Month 9: 0 (data collection ongoing)
+
+PENDING STATUS BREAKDOWN:
+• Enrollment samples pending: {enrollment_pending} participants (waiting for Week 4 visit)
+• Week 4 samples pending: {week4_pending} participants (haven't reached Week 4)
+• Month 9 samples pending: {month9_pending} participants (visit not yet available)
+
+ACTUAL DATA COLLECTION (among visits completed):
+• Enrollment samples returned: {total_participants_enrolled_data} of {len(participants_with_week4)} possible
+• Week 4 samples collected: {total_participants_week4_data} of {len(participants_with_week4)} possible
+
+CORRECTED INTERPRETATION:
+This analysis properly distinguishes between:
+1. "Pending" = participant hasn't reached the required visit yet
+2. "Not Collected" = participant reached visit but didn't provide/return samples
+3. Study timeline progression vs. actual non-compliance"""
+        
+        ax4.text(0.05, 0.95, summary_text, transform=ax4.transAxes, fontsize=11,
+                verticalalignment='top', fontfamily='monospace',
+                bbox=dict(boxstyle="round,pad=0.5", facecolor=self.colors['light'], 
+                         alpha=0.9, edgecolor=self.colors['primary'], linewidth=2))
+        
+        # Adjust layout
+        # Apply professional card-style formatting
+        fig = self.apply_professional_styling(fig)
+        
+        # Save figure
+        output_file = os.path.join(self.output_dir, 'saliva_collection_analysis.png')
+        plt.savefig(output_file, dpi=300, bbox_inches='tight', facecolor='#f8f9fa', edgecolor='none')
+        plt.close()
+        
+        print(f"Saliva collection analysis saved to: {output_file}")
     
     def generate_all_improved_reports(self):
         """
@@ -954,6 +1431,7 @@ This analysis distinguishes: (1) True attrition, (2) Pending data collection, (3
         self.create_promis_dashboard_improved()
         self.create_executive_summary_improved()
         self.create_missing_data_analysis()
+        self.create_saliva_collection_analysis()
         
         print("\n" + "=" * 55)
         print("ALL IMPROVED VISUAL REPORTS GENERATED")
