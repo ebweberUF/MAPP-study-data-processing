@@ -48,4 +48,21 @@ data/deidentified_labeled_data_2025-08-20/
 - Portable HTML reports for stakeholders
 
 ### Usage
-Run scripts sequentially to process raw REDCap data into polished research reports suitable for observational study presentations.
+
+## Repository Notes
+
+**⚠️ Data Privacy**: This repository contains only the processing scripts and metadata. All sensitive data files are excluded via `.gitignore` to maintain HIPAA compliance and data security.
+
+### To use this pipeline:
+1. Clone this repository
+2. Add your raw data files to the `data/` folder (not tracked in git)
+3. Run the scripts in the specified order
+4. Generated outputs will be created in `data/deidentified_labeled_data_*/`
+
+### Requirements
+- Python 3.x
+- Required packages: pandas, numpy, matplotlib, seaborn, plotly
+- REDCap data export files
+- Data dictionary metadata
+
+````
