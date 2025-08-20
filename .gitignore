@@ -1,0 +1,53 @@
+# Data folder - contains sensitive/large datasets
+data/
+
+# Python cache and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Large files that shouldn't be in version control
+*.csv
+*.xlsx
+*.xls
+*.pdf
+*.zip
+*.tar.gz
+
+# But allow specific small config/metadata files if needed
+!metadata/*.csv
+!metadata/*.json
