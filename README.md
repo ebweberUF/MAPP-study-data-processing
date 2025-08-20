@@ -1,7 +1,7 @@
 # MAPP Study Report Pipeline
 
 ## Overview
-Multi-modal Assessment of Pain Prediction (MAPP) study data processing and reporting pipeline for observational research on pre and post-surgery outcomes.
+Multisystem Assessment of Pain Prediction (MAPP) study data processing and reporting pipeline for observational research on pre and post-surgery outcomes.
 
 ## Final Report Pipeline
 
